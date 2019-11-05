@@ -1,6 +1,9 @@
 document.body.ontouchstart = function (e) {
   e.preventDefault()
 }
+document.body.ontouchmove = function (e) {
+  e.preventDefault()
+}
 
 var canvas = document.getElementById('xxx')
 var context = canvas.getContext('2d')
