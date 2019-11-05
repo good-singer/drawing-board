@@ -1,6 +1,17 @@
 var canvas = document.getElementById('xxx')
 var context = canvas.getContext('2d')
 
+let dpr = window.devicePixelRatio; // 假设dpr为2
+// 获取css的宽高
+let { width: cssWidth, height: cssHeight } = canvas.getBoundingClientRect();
+// 根据dpr，扩大canvas画布的像素，使1个canvas像素和1个物理像素相等
+canvas.width = dpr * cssWidth;
+canvas.height = dpr * cssHeight;
+// 由于画布扩大，canvas的坐标系也跟着扩大，如果按照原先的坐标系绘图内容会缩小
+// 所以需要将绘制比例放大
+context.scale(dpr, dpr);
+
+
 autoSetCanvasSize(canvas)
 
 listenToUser(canvas)
