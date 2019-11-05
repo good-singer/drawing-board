@@ -1,3 +1,7 @@
+document.body.ontouchstart = function (e) {
+  e.preventDefault()
+}
+
 var canvas = document.getElementById('xxx')
 var context = canvas.getContext('2d')
 
@@ -10,7 +14,6 @@ canvas.height = dpr * cssHeight;
 // 由于画布扩大，canvas的坐标系也跟着扩大，如果按照原先的坐标系绘图内容会缩小
 // 所以需要将绘制比例放大
 context.scale(dpr, dpr);
-
 
 autoSetCanvasSize(canvas)
 
