@@ -5,20 +5,33 @@ autoSetCanvasSize(canvas)
 
 listenToUser(canvas)
 
-
 var eraserEnabled = false
 var eraser = document.getElementById('eraser')
-var brush = document.getElementById('brush')
+var pen = document.getElementById('pen')
+pen.onclick = function () {
+  eraserEnabled = false
+  eraser.classList.remove('active')
+  pen.classList.add('active')
+}
 eraser.onclick = function () {
   eraserEnabled = true
-  actions.className = 'actions x'
-
+  pen.classList.remove('active')
+  eraser.classList.add('active')
 }
-brush.onclick = function () {
-  eraserEnabled = false
-  actions.className = 'actions'
 
-}
+// 利用事件委托，对颜色选择器进行监听
+var colors = document.getElementById('colors')
+colors.addEventListener('click', function (e) {
+  console.log(e.target.parentNode.children.length)
+
+  let length = e.target.parentNode.children.length
+  for (let i = 0; i < length; i++) {
+    e.target.parentNode.children[i].classList.remove('active')
+  }
+  context.fillStyle = e.target.className
+  context.strokeStyle = e.target.className
+  e.target.classList.add('active')
+}, false)
 
 
 function autoSetCanvasSize(canvas) {
@@ -112,7 +125,7 @@ function listenToUser(canvas) {
 
   function drawLine(x1, y1, x2, y2) {
     context.beginPath()
-    context.strokeStyle = 'black'
+    // context.strokeStyle = 'black'
     context.moveTo(x1, y1)
     context.lineWidth = 5
     context.lineTo(x2, y2)
