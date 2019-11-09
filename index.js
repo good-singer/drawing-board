@@ -1,12 +1,15 @@
-document.body.ontouchstart = function (e) {
-  e.preventDefault()
-}
-document.body.ontouchmove = function (e) {
-  e.preventDefault()
-}
 
 var canvas = document.getElementById('xxx')
 var context = canvas.getContext('2d')
+
+var lineWidth = 5
+context.strokeStyle = 'black'
+// context.lineCap = "round";
+// context.lineCap = "square";
+context.lineJoin = "round";
+
+context.fillStyle = '#fff';
+context.fillRect(0, 0, canvas.width, canvas.height);
 
 let dpr = window.devicePixelRatio; // 假设dpr为2
 // 获取css的宽高
@@ -18,6 +21,7 @@ canvas.height = dpr * cssHeight;
 // 所以需要将绘制比例放大
 context.scale(dpr, dpr);
 
+// 自动调控画布大小
 autoSetCanvasSize(canvas)
 
 listenToUser(canvas)
@@ -25,6 +29,8 @@ listenToUser(canvas)
 var eraserEnabled = false
 var eraser = document.getElementById('eraser')
 var pen = document.getElementById('pen')
+var clear = document.getElementById('clear')
+var save = document.getElementById('save')
 pen.onclick = function () {
   eraserEnabled = false
   eraser.classList.remove('active')
@@ -35,11 +41,22 @@ eraser.onclick = function () {
   pen.classList.remove('active')
   eraser.classList.add('active')
 }
+clear.onclick = function () {
+  context.clearRect(0, 0, canvas.width, canvas.height)
+}
+save.onclick = function () {
+  var url = canvas.toDataURL('image/png')
+  var a = document.createElement('a')
+  document.body.appendChild(a)
+  a.href = url
+  a.target = '_blank'
+  a.download = 'picture'
+  a.click()
+}
 
 // 利用事件委托，对颜色选择器进行监听
 var colors = document.getElementById('colors')
 colors.addEventListener('click', function (e) {
-  console.log(e.target.parentNode.children.length)
 
   let length = e.target.parentNode.children.length
   for (let i = 0; i < length; i++) {
@@ -49,6 +66,13 @@ colors.addEventListener('click', function (e) {
   context.strokeStyle = e.target.className
   e.target.classList.add('active')
 }, false)
+
+thin.onclick = function () {
+  lineWidth = 5
+}
+thick.onclick = function () {
+  lineWidth = 10
+}
 
 
 function autoSetCanvasSize(canvas) {
@@ -73,10 +97,10 @@ function listenToUser(canvas) {
   if (document.body.ontouchstart !== undefined) {
     // 触屏设备
     canvas.ontouchstart = function (aaa) {
-      console.log('kkkk')
+      // console.log('kkkk')
       var x = aaa.touches[0].clientX
       var y = aaa.touches[0].clientY
-      console.log(x, y)
+      // console.log(x, y)
       using = true
       if (eraserEnabled) {
         context.clearRect(x, y, 10, 10)
@@ -85,13 +109,13 @@ function listenToUser(canvas) {
       }
     }
     canvas.ontouchmove = function (aaa) {
-      console.log('jjjj')
+      // console.log('jjjj')
       var x = aaa.touches[0].clientX
       var y = aaa.touches[0].clientY
 
       if (!using) { return; }
       if (eraserEnabled) {
-        console.log(1111)
+        // console.log(1111)
         context.clearRect(x, y, 10, 10)
       } else {
         var newPoint = { "x": x, "y": y }
@@ -101,7 +125,7 @@ function listenToUser(canvas) {
       }
     }
     canvas.ontouchend = function () {
-      console.log('llll')
+      // console.log('llll')
       using = false
     }
   } else {
@@ -124,7 +148,7 @@ function listenToUser(canvas) {
 
       if (!using) { return; }
       if (eraserEnabled) {
-        console.log(1111)
+        // console.log(1111)
         context.clearRect(x, y, 10, 10)
       } else {
         var newPoint = { "x": x, "y": y }
@@ -138,13 +162,11 @@ function listenToUser(canvas) {
     }
   }
 
-
-
   function drawLine(x1, y1, x2, y2) {
     context.beginPath()
     // context.strokeStyle = 'black'
     context.moveTo(x1, y1)
-    context.lineWidth = 5
+    context.lineWidth = lineWidth
     context.lineTo(x2, y2)
     context.stroke()
     context.closePath()

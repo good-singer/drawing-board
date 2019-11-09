@@ -18,6 +18,9 @@ ol {
 }
 #xxx {
   display: block;
+  position: fixed;
+  top: 0;
+  left: 0;
 }
 .actions {
   padding: 15px;
@@ -66,4 +69,23 @@ ol {
 }
 .colors > li.blue {
   background-color: blue;
+}
+
+.sizes {
+  position: fixed;
+  right: 15px;
+  top: 15px;
+}
+.sizes > li {
+  margin: 10px 0;
+}
+.sizes > .thin {
+  width: 20px;
+  height: 0;
+  border-top: 3px solid black;
+}
+.sizes > .thick {
+  width: 20px;
+  height: 0;
+  border-top: 10px solid black;
 }
