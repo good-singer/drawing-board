@@ -4,8 +4,6 @@ var context = canvas.getContext('2d')
 
 var lineWidth = 5
 context.strokeStyle = 'black'
-// context.lineCap = "round";
-// context.lineCap = "square";
 context.lineJoin = "round";
 
 context.fillStyle = '#fff';
@@ -164,7 +162,6 @@ function listenToUser(canvas) {
 
   function drawLine(x1, y1, x2, y2) {
     context.beginPath()
-    // context.strokeStyle = 'black'
     context.moveTo(x1, y1)
     context.lineWidth = lineWidth
     context.lineTo(x2, y2)
